@@ -1,0 +1,47 @@
+
+
+
+
+
+                                                                     MSC.Patran 19.1.164499 Mon Oct 15 16:47:23 PDT 2012 - Analysis Code: MSC.Nastran 
+
+                                                                              Load Case: SC7:DUMMY_PROJECT_LC0001_DUMMY_CASE, Static Subcase 
+
+                                                                                Result Shell Forces, Force Resultant - Layer (NON-LAYERED) 
+
+                                                                                                   Entity: Element Tensor
+
+
+--Entity ID----El. Pos. ID---Loadcase ID----X Location----Y Location----Z Location----von Mises----X Component--------CID------
+     80002671             0             3  45661.550781   2817.709961   -101.844002    456.162750   -505.502411              0
+     80002673             0             3  45595.296875   2817.679932   -103.433258    471.024994   -511.346771              0
+     80002675             0             3  45529.050781   2817.647461   -105.022751    487.813110   -519.594299              0
+     80002677             0             3  45462.796875   2817.612549   -106.612244    493.795624   -519.058899              0
+                                                                     MSC.Patran 19.1.164499 Mon Oct 15 16:47:23 PDT 2012 - Analysis Code: MSC.Nastran 
+
+                                                                              Load Case: SC12:DUMMY_PROJECT_LC0002_DUMMY_CASE, Static Subcase 
+
+                                                                                Result Shell Forces, Force Resultant - Layer (NON-LAYERED) 
+
+                                                                                                   Entity: Element Tensor
+
+
+--Entity ID----El. Pos. ID---Loadcase ID----X Location----Y Location----Z Location----von Mises----X Component--------CID------
+     80002671             0             4  45661.550781   2817.709961   -101.844002    399.386536    434.034454              0
+     80002673             0             4  45595.296875   2817.679932   -103.433258    402.546204    445.389435              0
+     80002675             0             4  45529.050781   2817.647461   -105.022751    414.256622    454.334167              0
+     80002677             0             4  45462.796875   2817.612549   -106.612244    416.549835    455.050018              0
+                                                                     MSC.Patran 19.1.164499 Mon Oct 15 16:47:23 PDT 2012 - Analysis Code: MSC.Nastran 
+
+                                                                              Load Case: SC121:DUMMY_PROJECT_LC0003_DUMMY_CASE, Static Subcase 
+
+                                                                                Result Shell Forces, Force Resultant - Layer (NON-LAYERED) 
+
+                                                                                                   Entity: Element Tensor
+
+
+--Entity ID----El. Pos. ID---Loadcase ID----X Location----Y Location----Z Location----von Mises----X Component--------CID------
+     80002671             0             5  45661.550781   2817.709961   -101.844002    400.263214    434.502106              0
+     80002673             0             5  45595.296875   2817.679932   -103.433258    403.089142    445.760162              0
+     80002675             0             5  45529.050781   2817.647461   -105.022751    414.567291    454.586090              0
+     80002677             0             5  45462.796875   2817.612549   -106.612244    416.650177    455.217743              0
