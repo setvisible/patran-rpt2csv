@@ -18,17 +18,11 @@ into an exportable table for Calc or Excel.
 import os.path
 from optparse import OptionParser
 
-
-def RepresentsInt(s):
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
+global_verbose = True
 
 def main():
     parser = OptionParser(usage="usage: %prog [options] filename", version="1.0")
-    parser.add_option("-o", "--output", dest="outputfilename",
+    parser.add_option("-o", "--output", dest="output_file_name",
                       help="Write result to FILE",
                       metavar="FILE")
     parser.add_option("-e", "--ends-with", dest="endswith",
@@ -41,135 +35,126 @@ def main():
     parser.add_option("-q", "--quiet", dest="verbose",
                       help="Don't print status messages to stdout",
                       default=True, action="store_false")
-    
+
     (options, args) = parser.parse_args()
-    outputfilename = options.outputfilename
-    endswith = options.endswith
-    substring = options.substring
-    verbose = options.verbose
-        
+    output_file_name = options.outputfilename
+    ends_with = options.endswith
+    sub_string = options.substring
+    _set_verbose(options.verbose)
+
     if len(args) != 1:
         parser.error("wrong number of arguments")
-        
-    inputfilename = args[0]
-    
+
+    input_file_name = args[0]
+
     # Increment the output filename to not overwrite
-    if not outputfilename:
+    if not output_file_name:
         incr = 0
         while True:
             ext = "_csv-friendly_" + str(incr) + ".rpt"
-            outputfilename = os.path.basename(inputfilename) + ext
-            if not os.path.isfile(outputfilename): break
+            output_file_name = os.path.basename(input_file_name) + ext
+            if not os.path.exists(output_file_name): break
             incr = incr + 1
-            
-    if not endswith:
+
+    if not ends_with:
         parser.error("No 'ends with' string. Please define the -e.")
-    
-    if not substring:
+
+    if not sub_string:
         parser.error("No substring to populate. Please define the -s.")
-    
-    rangeList = substring.split(':', 1 )
-    if len(rangeList) != 2 \
-    or not RepresentsInt( rangeList[0] ) \
-    or not RepresentsInt( rangeList[1] ) :
+
+    try:
+        start, length = map(int, sub_string.split(':'))
+    except:
         parser.error("-s argument must be 'a:b', where a and b are integers.")
-    
-    start = int(rangeList[0])
-    length = int(rangeList[1])
-    
-    if not os.path.isfile(inputfilename):
-        parser.error("File '%s' not found." % inputfilename)
-        
-    if os.path.isfile(outputfilename):
+
+    if not os.path.exists(input_file_name):
+        parser.error("File '%s' not found." % input_file_name)
+
+    if os.path.exists(output_file_name):
         parser.error("File '%s' already exists. End of the script."\
-                     % outputfilename)
-    
-    
-    c = Convertor()
-    c.setVerbose(verbose)
-    c.process(inputfilename, outputfilename, endswith, start, length)
+                     % output_file_name)
 
 
-class Convertor:
-    
-    verbose = True
-    
-    def setVerbose(self, verbose):
-        self.verbose = verbose
-        
-    def isVerbose(self):
-        return self.verbose
-        
-    def info(self, text):
-        if self.verbose:
-            print text
-    
-    def readFile(self, filename):
-        file = open(filename,"r")
-        text = file.readlines()
-        file.close()
-        return text
-        
-    def writeFile(self, result, filename):
-        file = open(filename,"w")
-        for item in result:
-            file.write("%s" % item)
-        file.close()
-        
-        
-    def process(self, inputfilename, outputfilename, endswith, start, length):
-        
-        self.info("reading \"%s\"..." % inputfilename)
-        text = self.readFile(inputfilename)
-        
-        result = self.convertText(text, endswith, start, length)
-        
-        self.info("writing \"%s\"..." % outputfilename)
-        self.writeFile(result, outputfilename)
-        
-        self.info("End of the script.")
-        
-    
-    def convertText(self, text, endswith, start, length):
-            
-        self.info("copying substring from column %s (length %s) "\
-                  "in lines ending with '%s'..." % (start, length, endswith) )
-        
-        isContent = False
-        currentcase = ""
-        countcase = 0
-        list1 = [];
-        
-        for line in text:
-        
-            trimmed = line.strip()
-            if trimmed.startswith("MSC.Patran"):
-                isContent = False
-                currentcase = ""
-                continue
-            
-            if trimmed.endswith(endswith):
-                self.info("trimmed : %s" % trimmed)
-                currentcase = trimmed[start:start+length]
-                self.info("currentcase : %s" % currentcase)
-                countcase = countcase + 1
-                self.info("found \"%s\"..." % currentcase)
-                continue
-                
-            if line.startswith("--Entity ID--"):
-                isContent = True
-                if len(list1) == 0:
-                    separator = '*' * length        # repeat n times char '*'
-                    list1.append("%s--%s" % (separator, line) )
-                continue
-                
-            if isContent:
-                list1.append("%s  %s" % (currentcase, line) )
-        
-        self.info("Total found %s occurrences..." % countcase)
-        return list1
-        
-        
-        
+    _process(input_file_name, output_file_name, ends_with, start, length)
+
+
+def _set_verbose(verbose):
+    global global_verbose
+    global_verbose = verbose
+
+def _is_verbose():
+    global global_verbose
+    return global_verbose
+
+def _info(text):
+    global global_verbose
+    if global_verbose:
+        print text
+
+def _read_file(file_name):
+    with open(file_name, 'r') as file:
+        return file.readlines()
+
+def _write_file(lines, file_name):
+    file = open(file_name,"w")
+    for line in lines:
+        file.write("%s" % line)
+    file.close()
+
+
+def _process(input_file_name, output_file_name, ends_with, start, length):
+
+    _info("reading \"%s\"..." % input_file_name)
+    text = _read_file(input_file_name)
+
+    converted_text = _convert_text(text, ends_with, start, length)
+
+    _info("writing \"%s\"..." % output_file_name)
+    _write_file(converted_text, output_file_name)
+
+    _info("End of the script.")
+
+
+def _convert_text(text, ends_with, start, length):
+
+    _info("copying substring from column %s (length %s) "\
+          "in lines ending with '%s'..." % (start, length, ends_with) )
+
+    is_content = False
+    current_subcase = ""
+    subcases_count = 0
+    list_1 = [];
+
+    for line in text:
+
+        trimmed_line = line.strip()
+        if trimmed_line.startswith("MSC.Patran"):
+            is_content = False
+            current_subcase = ""
+            continue
+
+        if trimmed_line.endswith(ends_with):
+            _info("trimmed : %s" % trimmed_line)
+            current_subcase = trimmed_line[start:start+length]
+            _info("current_subcase : %s" % current_subcase)
+            subcases_count = subcases_count + 1
+            _info("found \"%s\"..." % current_subcase)
+            continue
+
+        if line.startswith("--Entity ID--"):
+            is_content = True
+            if len(list_1) == 0:
+                separator = '*' * length        # repeat n times char '*'
+                list_1.append("%s--%s" % (separator, line) )
+            continue
+
+        if is_content:
+            list_1.append("%s  %s" % (current_subcase, line) )
+
+    _info("Total found %s occurrences..." % subcases_count)
+    return list_1
+
+
+
 if __name__ == '__main__':
     main()
