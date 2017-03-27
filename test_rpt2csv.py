@@ -23,11 +23,11 @@ class TestRPT2CSV(unittest.TestCase):
         self.assertTrue(input_file_name, "Error: null or empty string")
         self.assertTrue(expected_file_name, "Error: null or empty string")
 
-        with open(input_file_name, 'r') as input_file:
-            input_text = input_file.readlines()
+        with open(input_file_name, 'r') as file:
+            input_text = file.readlines()
 
-        with open(expected_file_name, 'r') as expected_file:
-            expected_text = expected_file.readlines()
+        with open(expected_file_name, 'r') as file:
+            expected_text = file.readlines()
 
         self.assertTrue(input_text, "Error: null or empty string")
         self.assertTrue(expected_text, "Error: null or empty string")
