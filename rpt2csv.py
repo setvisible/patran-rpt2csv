@@ -25,10 +25,10 @@ def main():
     parser.add_option("-o", "--output", dest="output_file_name",
                       help="Write result to FILE",
                       metavar="FILE")
-    parser.add_option("-e", "--ends-with", dest="endswith",
+    parser.add_option("-e", "--ends-with", dest="ends_with",
                       help="Look for the first line in the header that ends with STRING",
                       default=", Static Subcase", metavar="STRING")
-    parser.add_option("-s", "--substring", dest="substring",
+    parser.add_option("-s", "--substring", dest="sub_string",
                       help="Populate the first column with string at RANGE. "
                       + "Must be 'a:b', where a and b are integers.",
                       default="-33:6", metavar="RANGE")
@@ -37,9 +37,9 @@ def main():
                       default=True, action="store_false")
 
     (options, args) = parser.parse_args()
-    output_file_name = options.outputfilename
-    ends_with = options.endswith
-    sub_string = options.substring
+    output_file_name = options.output_file_name
+    ends_with = options.ends_with
+    sub_string = options.sub_string
     _set_verbose(options.verbose)
 
     if len(args) != 1:
