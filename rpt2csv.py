@@ -96,10 +96,8 @@ def _read_file(file_name):
         return file.readlines()
 
 def _write_file(lines, file_name):
-    file = open(file_name,"w")
-    for line in lines:
-        file.write("%s" % line)
-    file.close()
+    with open(file_name, 'w') as file:
+        file.writelines(lines)
 
 
 def _process(input_file_name, output_file_name, ends_with, start, length):
